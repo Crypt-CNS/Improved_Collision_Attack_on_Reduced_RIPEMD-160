@@ -1,4 +1,4 @@
-﻿#include "RIPEMD160.h"
+#include "RIPEMD160.h"
 #include <fstream>
 #include <cstdlib>
 #include <string>
@@ -139,7 +139,7 @@ RIPEMD160::RIPEMD160(){
 
 	in[11] = 0x15;
 	out[11] = 0xa800;
-	
+
 	in[12] = 0x6ffba800;
 	out[12] = 0xea001bff;
 
@@ -236,7 +236,7 @@ void RIPEMD160::computeHash(int start, int steps){
 		}
 		else if (i < 32){
 			X[i] = LL(X[i - 4], 10) + LL(LL(X[i - 5], 10) + IFX(X[i - 1], X[i - 2], LL(X[i - 3], 10)) + word[LI[1][i - 16]] + LC[1], LS[1][i - 16]);
-			Q[i] = LL(Y[i - 5], 10) + IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + word[RI[1][i-16]] + RC[1];
+			Q[i] = LL(Y[i - 5], 10) + IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + word[RI[1][i - 16]] + RC[1];
 			Y[i] = LL(Y[i - 4], 10) + LL(LL(Y[i - 5], 10) + IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + word[RI[1][i - 16]] + RC[1], RS[1][i - 16]);
 		}
 		else if (i < 48){
@@ -256,7 +256,7 @@ void RIPEMD160::computeHash(int start, int steps){
 
 //Get random value
 inline unsigned int RIPEMD160::getRand(){
-	unsigned int num1 = 0, num2 = 0,result;
+	unsigned int num1 = 0, num2 = 0, result;
 	num1 = rand() & 0xffff;
 	num2 = rand() & 0xffff;
 	result = (num1 << 16) | num2;
@@ -265,7 +265,7 @@ inline unsigned int RIPEMD160::getRand(){
 	return result;
 }
 
-inline bool RIPEMD160::checkQ(unsigned int q, int index,int shift){
+inline bool RIPEMD160::checkQ(unsigned int q, int index, int shift){
 	if (LL(q + in[index], shift) != out[index] + LL(q, shift)){
 		return false;
 	}
@@ -303,8 +303,8 @@ inline void RIPEMD160::modifyY9(){
 	//19 bits
 	//Y9: 0---000000-1--1---0000--1-001010
 	//Y9,31=0
-	int condition1[5] = { 20, 17, 7, 3, 1};
-	int condition0[15] = { 31, 27, 26, 25, 24, 23, 22, 13, 12, 11, 10, 5, 4, 2, 0};
+	int condition1[5] = { 20, 17, 7, 3, 1 };
+	int condition0[15] = { 31, 27, 26, 25, 24, 23, 22, 13, 12, 11, 10, 5, 4, 2, 0 };
 	getModification(Y[9], condition1, 5, 1);
 	getModification(Y[9], condition0, 15, 0);
 }
@@ -313,7 +313,7 @@ inline void RIPEMD160::modifyY10(){
 	//32 bits
 	//Y11: 10--0---0000110110010000000nuuuu
 	//Y11,31=1
-	int condition1[10] = { 31,19, 18, 16, 15, 12, 3, 2, 1, 0 };
+	int condition1[10] = { 31, 19, 18, 16, 15, 12, 3, 2, 1, 0 };
 	int condition0[17] = { 30, 27, 23, 22, 21, 20, 17, 14, 13, 11, 10, 9, 8, 7, 6, 5, 4 };
 	getModification(Y[10], condition1, 10, 1);
 	getModification(Y[10], condition0, 17, 0);
@@ -355,8 +355,8 @@ inline void RIPEMD160::modifyY12(){
 	//30 bits
 	//Y12: 0unn1uu-111-1-1--nuunn11011011un
 	//Y12,20=1; Y12,18=0; Y12,16=0
-	int condition1[19] = { 30, 27, 26, 25, 23, 22, 21,20, 19, 17, 13, 12, 9, 8, 6, 5, 3, 2, 1 };
-	int condition0[11] = { 31, 29, 28, 18, 14, 11, 10, 7, 4, 0,16 };
+	int condition1[19] = { 30, 27, 26, 25, 23, 22, 21, 20, 19, 17, 13, 12, 9, 8, 6, 5, 3, 2, 1 };
+	int condition0[11] = { 31, 29, 28, 18, 14, 11, 10, 7, 4, 0, 16 };
 	getModification(Y[12], condition1, 19, 1);
 	getModification(Y[12], condition0, 11, 0);
 }
@@ -366,7 +366,7 @@ inline void RIPEMD160::modifyY13(){
 	//Y13: -100001111----1-10nu10101-nu1-11
 	//Y13,[6,19,20,21]=1
 	int condition1[19] = { 30, 25, 24, 23, 22, 17, 15, 12, 11, 9, 7, 4, 3, 1, 0, 6, 21, 20, 19 };
-	int condition0[9] = { 29, 28, 27, 26, 14, 13, 10, 8, 5};
+	int condition0[9] = { 29, 28, 27, 26, 14, 13, 10, 8, 5 };
 	getModification(Y[13], condition1, 19, 1);
 	getModification(Y[13], condition0, 9, 0);
 }
@@ -376,8 +376,8 @@ inline void RIPEMD160::modifyY14(){
 	//Y14: 00---01111-0u-u-101000-u----0-01
 	//Y14,9=0; Y14,5=0; Y14,29=0; Y14,28=0; Y14,21=0;
 	//Y14,27=1
-	int condition1[11] = { 27,25, 24, 23, 22, 19, 17, 15, 13, 8, 0};
-	int condition0[15] = { 29,28,31, 30, 26, 20,14, 12, 11, 10, 3, 1, 5,21,9 };
+	int condition1[11] = { 27, 25, 24, 23, 22, 19, 17, 15, 13, 8, 0 };
+	int condition0[15] = { 29, 28, 31, 30, 26, 20, 14, 12, 11, 10, 3, 1, 5, 21, 9 };
 	getModification(Y[14], condition1, 11, 1);
 	getModification(Y[14], condition0, 15, 0);
 }
@@ -419,9 +419,9 @@ inline void RIPEMD160::modifyY18(){
 	//14bits
 	//Y18: 1u------1--100--010----------1-1
 	int condition1[7] = { 31, 30, 23, 20, 14, 2, 0 };
-	int condition0[4] = { 19, 18, 15, 13 };
+	int condition0[5] = { 21,19, 18, 15, 13 };
 	getModification(Y[18], condition1, 7, 1);
-	getModification(Y[18], condition0, 4, 0);
+	getModification(Y[18], condition0, 5, 0);
 
 	//multi modification
 	int pos1[3] = { 17, 8, 1 };
@@ -459,6 +459,36 @@ inline void RIPEMD160::modifyY19(){
 	int pos1[1] = { 24 };
 	int pos2[1] = { 24 };
 	Y[19] = getMultiModification(Y[18], Y[19], pos1, pos2, 1, 0);
+
+	//Other conditions to control the modular difference
+	unsigned int tmpY15 = LL(Y[15], 10);
+	unsigned int low6Bits = tmpY15 & 0x3f;
+	unsigned int low31Bits = tmpY15 & 0x7fffffff;
+
+	unsigned int low6BitsY19 = Y[19] & 0x3f;
+	unsigned int low31BitsY19 = Y[19] & 0x7fffffff;
+
+	if (low6BitsY19 < low6Bits){
+		if (getBit(Y[19], 6) != getBit(Y[15], 28)){
+			Y[19] = Y[19] ^ EXP[6];
+		}
+	}
+	else{
+		if (getBit(Y[19], 6) == getBit(Y[15], 28)){
+			Y[19] = Y[19] ^ EXP[6];
+		}
+	}
+
+	if (low31BitsY19 < low31Bits){
+		if (getBit(Y[19], 31) != getBit(Y[15], 21)){
+			Y[19] = Y[19] ^ EXP[31];
+		}
+	}
+	else{
+		if (getBit(Y[19], 31) == getBit(Y[15], 21)){
+			Y[19] = Y[19] ^ EXP[31];
+		}
+	}
 }
 
 inline void RIPEMD160::modifyY20(){
@@ -480,7 +510,7 @@ inline void RIPEMD160::modifyY20(){
 inline void RIPEMD160::modifyY21(){
 	//Y21: u-----001-u-----------1u------00
 	//Y21,30=1
-	int condition1[6] = { 31,30, 23, 21, 9, 8 };
+	int condition1[6] = { 31, 30, 23, 21, 9, 8 };
 	int condition0[7] = { 25, 24, 16, 15, 14, 1, 0 };// Y21,14 = 0; Y21,15 = 0, Y21,16 = 0;
 
 	getModification(Y[21], condition1, 6, 1);
@@ -502,7 +532,7 @@ inline void RIPEMD160::modifyY22(){
 	//Y22: 1--------------0-----01-------n-
 
 	int condition1[3] = { 31, 22, 9 };
-	int condition0[6] = {26,25,24,16, 10, 1 };//Add Y22,24 = 0; Y22,25 = 0; Y22,26 = 0;
+	int condition0[6] = { 26, 25, 24, 16, 10, 1 };//Add Y22,24 = 0; Y22,25 = 0; Y22,26 = 0;
 
 	getModification(Y[22], condition1, 3, 1);
 	getModification(Y[22], condition0, 6, 0);
@@ -527,7 +557,7 @@ inline bool RIPEMD160::checkY22_8(){
 }
 
 inline bool RIPEMD160::checkY22(){
-	int bitpos[5] = { 1,  9, 10, 16, 31 };
+	int bitpos[5] = { 1, 9, 10, 16, 31 };
 	int condition[6] = { 0, 1, 0, 0, 1 };
 
 	for (int i = 0; i < 5; i++){
@@ -544,7 +574,7 @@ bool RIPEMD160::testRightBranch(){
 	for (int i = 23; i < 30; i++){
 		Q[i] = LL(Y[i - 5], 10) + IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + word[RI[1][i - 16]] + RC[1];
 		Y[i] = LL(Y[i - 4], 10) + LL(Q[i], RS[1][i - 16]);
-	
+
 		if (i == 23){
 			if (checkY23() == false){
 				return false;
@@ -590,7 +620,7 @@ bool RIPEMD160::testRightBranch(){
 
 inline bool RIPEMD160::checkY23(){
 	int bitpos[6] = { 11, 1, 0, 31, 16, 9, };
-	int condition[6] = { 0, 0, 0, 1, 1,1 };
+	int condition[6] = { 0, 0, 0, 1, 1, 1 };
 
 	for (int i = 0; i < 6; i++){
 		if (getBit(Y[23], bitpos[i]) != condition[i]){
@@ -615,7 +645,7 @@ inline bool RIPEMD160::checkY24(){
 
 	for (int i = 0; i < 6; i++){
 		if (getBit(Y[24], bitpos[i]) != condition[i]){
-				return false;
+			return false;
 		}
 	}
 	return true;
@@ -667,7 +697,7 @@ bool RIPEMD160::findStartingPoint(){
 
 	index = 14;
 	modifyY14();
-	word[3] = RR(Y[index] - LL(Y[index-4], 10), RS[0][index%16])-(ONX(Y[index-1],Y[index-2],LL(Y[index-3],10))+LL(Y[index-5],10)+RC[0]);//Then, we can compute word[3]
+	word[3] = RR(Y[index] - LL(Y[index - 4], 10), RS[0][index % 16]) - (ONX(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[0]);//Then, we can compute word[3]
 	Q[index] = RR(Y[index] - LL(Y[index - 4], 10), RS[0][index % 16]);
 	if (checkQ(Q[index], index, RS[0][index % 16]) == false){
 		cout << "Y" << index << " is wrong!" << endl;
@@ -675,7 +705,7 @@ bool RIPEMD160::findStartingPoint(){
 
 	index = 15;
 	modifyY15();
-	word[12] = RR(Y[index] - LL(Y[index - 4], 10), RS[0][index%16]) - (ONX(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[0]);//Then, we can compute word[12]
+	word[12] = RR(Y[index] - LL(Y[index - 4], 10), RS[0][index % 16]) - (ONX(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[0]);//Then, we can compute word[12]
 	Q[index] = RR(Y[index] - LL(Y[index - 4], 10), RS[0][index % 16]);
 	if (checkQ(Q[index], index, RS[0][index % 16]) == false){
 		cout << "Y" << index << " is wrong!" << endl;
@@ -683,12 +713,12 @@ bool RIPEMD160::findStartingPoint(){
 
 	index = 16;
 	modifyY16();
-	word[6] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index%16]) - (IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1]);//Then, we can compute word[6]
+	word[6] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index % 16]) - (IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1]);//Then, we can compute word[6]
 	Q[index] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index % 16]);
 	if (checkQ(Q[index], index, RS[1][index % 16]) == false){
 		cout << "Y" << index << " is wrong!" << endl;
 	}
-	
+
 	index = 17;
 	modifyY17();
 	word[11] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index % 16]) - (IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1]);//Then, we can compute word[11]
@@ -698,12 +728,20 @@ bool RIPEMD160::findStartingPoint(){
 	}
 
 	index = 18;
-	Y[index] = LL(Y[index - 4], 10) + LL(IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1]+word[3], RS[1][index % 16]);
+	Y[index] = LL(Y[index - 4], 10) + LL(IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1] + word[3], RS[1][index % 16]);
 	Q[index] = IFZ(Y[index - 1], Y[index - 2], LL(Y[index - 3], 10)) + LL(Y[index - 5], 10) + RC[1] + word[3];
-	if (checkQ(Q[index], index, RS[1][index % 16])==false || checkY18() == false){
+	if (checkY18() == false){
 		//cout << "Y18 WRONG!" << endl;
 		return false;
 	}
+	else{
+		if (checkQ(Q[index], index, RS[1][index % 16]) == false){
+			cout << "FALSE!" << endl;
+			system("pause");
+			return false;
+		}
+	}
+	return true;
 }
 
 void RIPEMD160::generateStartingPoint(){
@@ -719,6 +757,7 @@ void RIPEMD160::generateStartingPoint(){
 	modifyY19();
 	Q[19] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index % 16]);
 	while (!checkQ(Q[19], 19, RS[1][3])){
+		cout << "WRONG!"<<endl;
 		Y[19] = getRand();
 		modifyY19();
 		Q[19] = RR(Y[index] - LL(Y[index - 4], 10), RS[1][index % 16]);
@@ -731,7 +770,7 @@ void RIPEMD160::generateStartingPoint(){
 	for (int i = 9; i < 20; i++){
 		//toBinary(Y[i]);
 		cout << "Y[" << dec << i << "] = 0x";
-		cout << hex << Y[i] << ";"<< endl;
+		cout << hex << Y[i] << ";" << endl;
 	}
 	cout << endl;
 
@@ -760,7 +799,7 @@ void RIPEMD160::initializeDensePart(){
 	word[6] = 0x1221b7bb;
 	word[11] = 0xf567ac2e;
 	word[7] = 0x42156657;
-	
+
 	srand(time(NULL));
 }
 
@@ -773,7 +812,7 @@ void RIPEMD160::forwardFromMiddle(){
 		else if (i == 21){
 			modifyY21();
 		}
-		else if (i==22){
+		else if (i == 22){
 			modifyY22();
 		}
 
@@ -782,7 +821,7 @@ void RIPEMD160::forwardFromMiddle(){
 			cout << "Y" << i << " is wrong!" << endl;
 		}
 
-		word[RI[i/16][i%16]] = RR(Y[i] - LL(Y[i - 4], 10), RS[1][i% 16]) - (IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + LL(Y[i - 5], 10) + RC[1]);//Then, we can compute word[0]
+		word[RI[i / 16][i % 16]] = RR(Y[i] - LL(Y[i - 4], 10), RS[1][i % 16]) - (IFZ(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + LL(Y[i - 5], 10) + RC[1]);//Then, we can compute word[0]
 	}
 }
 
@@ -826,7 +865,7 @@ bool RIPEMD160::forwardFromIV(){
 
 	//compute word[10], word[1], word[8], word[15] to link two parts
 	for (int i = 10; i < 14; i++){
-		word[RI[0][i]] = RR(Y[i] - LL(Y[i-4], 10), RS[0][i]) - (ONX(Y[i-1], Y[i-2], LL(Y[i-3], 10)) + LL(Y[i-5], 10) + RC[0]);
+		word[RI[0][i]] = RR(Y[i] - LL(Y[i - 4], 10), RS[0][i]) - (ONX(Y[i - 1], Y[i - 2], LL(Y[i - 3], 10)) + LL(Y[i - 5], 10) + RC[0]);
 		//cout << (int)RI[0][i] << endl;
 	}
 
@@ -888,7 +927,7 @@ void RIPEMD160::FindCollisionOnRightBranch(){
 	word[14] = 0x5c6ff19b;
 	word[15] = 0xc306e50f;
 	///*/
-	
+
 	/////Test
 	computeHash(0, 30);
 	for (int i = 10; i < 30; i++){
@@ -908,7 +947,7 @@ void RIPEMD160::FindCollisionOnRightBranch(){
 	/////
 	cout << "Difference Propagation:" << endl;
 	for (int i = 0; i < 30; i++){
-		cout << "Y" <<dec<< i << ": ";
+		cout << "Y" << dec << i << ": ";
 		toBinary(Y[i] ^ tmpY[i]);
 	}
 	cout << endl;
@@ -925,20 +964,20 @@ void RIPEMD160::FindCollisionOnRightBranch(){
 	//output message words
 	for (int i = 0; i < 15; i++){
 		cout << "word[" << dec << i << "] = 0x";
-		cout<<hex<< word[i] << endl;
+		cout << hex << word[i] << endl;
 	}
-	cout << "word[15] = 0x" << hex << word[15] - EXP[24] << " -> 0x" << word[15]<<endl;
+	cout << "word[15] = 0x" << hex << word[15] - EXP[24] << " -> 0x" << word[15] << endl;
 }
 
 void  RIPEMD160::formalizeOutput(unsigned int tmpY[]){
 	/*for (int i = 0; i < 5; i++){
-		cout << i - 4 << " &";
-		outputOneLine(RIV[i]);
-		cout << "\\" << "\\" << endl;
+	cout << i - 4 << " &";
+	outputOneLine(RIV[i]);
+	cout << "\\" << "\\" << endl;
 	}*/
 
 	for (int i = 0; i < 30; i++){
-		cout << i+1 << " &";
+		cout << i + 1 << " &";
 		outputOneLine(tmpY[i], Y[i], i);
 		cout << "\\" << "\\" << endl;
 	}
@@ -946,13 +985,13 @@ void  RIPEMD160::formalizeOutput(unsigned int tmpY[]){
 
 void  RIPEMD160::formalizeOutputForWindow(unsigned int tmpY[]){
 	for (int i = 0; i < 30; i++){
-		cout <<"Y"<<(dec) <<i + 1 << " ";
+		cout << "Y" << (dec) << i + 1 << " ";
 		outputOneLineForWindow(tmpY[i], Y[i], i);
 		cout << endl;
 	}
 }
 
-void RIPEMD160::outputOneLine(unsigned int original, unsigned int newValue,int steps){
+void RIPEMD160::outputOneLine(unsigned int original, unsigned int newValue, int steps){
 	string str;
 	str = "";
 	unsigned int result;
@@ -975,7 +1014,7 @@ void RIPEMD160::outputOneLine(unsigned int original, unsigned int newValue,int s
 			}
 		}
 	}
-	
+
 	if (steps<9 || steps>19){
 		for (int i = 0; i < 32; i++){
 			if (i != 0 && i % 8 == 0){
@@ -983,7 +1022,7 @@ void RIPEMD160::outputOneLine(unsigned int original, unsigned int newValue,int s
 			}
 			cout << str[i] << "&";
 		}
-		cout <<dec<<(int)RI[steps/16][(steps+1)%16]<< endl;
+		cout << dec << (int)RI[steps / 16][(steps + 1) % 16] << endl;
 	}
 
 	else{
@@ -991,9 +1030,9 @@ void RIPEMD160::outputOneLine(unsigned int original, unsigned int newValue,int s
 			if (i != 0 && i % 8 == 0){
 				cout << " & ";
 			}
-			cout <<"\\textcolor{red}{"<< str[i] << "}&";
+			cout << "\\textcolor{red}{" << str[i] << "}&";
 		}
-		cout << dec <<(int) RI[steps / 16][(steps + 1) % 16] << endl;
+		cout << dec << (int)RI[steps / 16][(steps + 1) % 16] << endl;
 	}
 }
 
@@ -1036,7 +1075,7 @@ void RIPEMD160::outputOneLine(unsigned int value){
 	string str;
 	str = "";
 	unsigned int result;
-	for (int i = 31; i >=0; i--){
+	for (int i = 31; i >= 0; i--){
 		result = value&EXP[i];
 		if (result == EXP[i]){
 			str += "1";
@@ -1047,7 +1086,7 @@ void RIPEMD160::outputOneLine(unsigned int value){
 	}
 
 	for (int i = 0; i < 32; i++){
-		if (i!=0 && i % 8 == 0){
+		if (i != 0 && i % 8 == 0){
 			cout << " & ";
 		}
 		cout << str[i] << "&";
